@@ -1,0 +1,26 @@
+class Product
+types
+	public ProductName = seq1 of char;
+	public ProductPrice = real;
+	public ProductStock = nat;	
+	public ProductDiscount = real; 
+values
+
+instance variables
+	public name: ProductName;	
+	public price: ProductPrice;
+	public stock: ProductStock := 0;
+	public discount: ProductDiscount := 0.0;
+	inv price >= 0.0;
+	inv stock >= 0;
+	inv discount >= 0.0;
+	inv discount <= 1.0;
+operations
+	public Product : ProductName * ProductPrice ==> Product
+	Product(n,p) == (name := n; price := p; return self);
+
+functions
+
+traces
+
+end Product

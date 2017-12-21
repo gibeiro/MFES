@@ -1,0 +1,18 @@
+class Merchant
+types
+	public MerchantName = seq1 of char;
+	public ProductName = Product`ProductName;
+
+	
+values
+
+instance variables
+	public products: map ProductName to Product := {|->};
+	
+operations
+
+functions
+
+traces
+
+end Merchant

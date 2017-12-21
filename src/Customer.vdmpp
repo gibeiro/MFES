@@ -1,0 +1,17 @@
+class Customer
+types
+public CustomerBalance = real;
+public CustomerCredits = real;
+public CustomerName = seq1 of char;
+
+values
+
+instance variables
+
+operations
+
+functions
+
+traces
+
+end Customer
