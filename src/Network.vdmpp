@@ -1,14 +1,25 @@
 class Network
 types
--- TODO Define types here
+	public NetworkFee = real;
+	public ProductName = Product`ProductName;
+	public MerchantName = Merchant`MerchantName;	
+	public CustomerName = Customer`CustomerName;
 values
--- TODO Define values here
+
 instance variables
--- TODO Define instance variables here
+	public merchants: map MerchantName to Merchant := {|->};
+	public customers: map CustomerName to Customer := {|->};
 operations
--- TODO Define operations here
+	public addCustomer: Customer ==> ()
+	addCustomer(c) == customers := customers munion {c.name |-> c}
+	pre c.name not in set dom customers;
+	
+	public addMerchant: Merchant ==> ()
+	addMerchant(m) == merchants := merchants munion {m.name |-> m}
+	pre m.name not in set dom merchants;	
+	
 functions
--- TODO Define functiones here
+
 traces
--- TODO Define Combinatorial Test Traces here
+
 end Network

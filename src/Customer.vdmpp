@@ -1,17 +1,29 @@
 class Customer
 types
-public CustomerBalance = real;
-public CustomerCredits = real;
-public CustomerName = seq1 of char;
-
+	public CustomerBalance = real;
+	public CustomerCredits = real;
+	public CustomerName = seq1 of char;
 values
 
 instance variables
-
+	public name: CustomerName;
+	public balance: CustomerBalance;
+	public credits: CustomerCredits := 0.0;
+	inv balance >= 0.0;
+	inv credits >= 0.0;
 operations
-
+	public Customer: CustomerName * CustomerBalance ==> Customer
+	Customer(n,b) == (name := n; balance := b; return self);
+	public getBalance: () ==> CustomerBalance
+	getBalance() == (return balance);
+	public getCredits: () ==> CustomerCredits
+	getCredits() == (return credits);
+	public setBalance: CustomerBalance ==> CustomerBalance
+	setBalance(b) == (balance := b; return balance);
+	public setCredits: CustomerCredits ==> CustomerCredits
+	setCredits(c) == (credits := c; return credits);
 functions
-
+	
 traces
 
 end Customer

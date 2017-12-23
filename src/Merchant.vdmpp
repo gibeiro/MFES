@@ -1,16 +1,22 @@
 class Merchant
 types
 	public MerchantName = seq1 of char;
+	public MerchantBalance = real;
 	public ProductName = Product`ProductName;
-
-	
+	public NetworkFee = Network`NetworkFee;
 values
 
 instance variables
+	public name: MerchantName;
+	public balance: MerchantBalance;
 	public products: map ProductName to Product := {|->};
-	
+	public fee: NetworkFee := 0;	
+	inv balance >= 0.0;
+	inv fee >= 0.0;
+	inv fee <= 1.0;
 operations
-
+	public Merchant: MerchantName * MerchantBalance ==> Merchant
+	Merchant(n,b) == (name := n; balance := b; return self);
 functions
 
 traces

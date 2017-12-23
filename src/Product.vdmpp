@@ -16,9 +16,8 @@ instance variables
 	inv discount >= 0.0;
 	inv discount <= 1.0;
 operations
-	public Product : ProductName * ProductPrice ==> Product
+	public Product: ProductName * ProductPrice ==> Product
 	Product(n,p) == (name := n; price := p; return self);
-
 functions
 
 traces
