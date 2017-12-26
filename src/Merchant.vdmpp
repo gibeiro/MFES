@@ -20,6 +20,13 @@ operations
 	getProduct(n) == return products(n)
 	pre n in set dom products;
 	
+	public getProductsByName(productName: ProductName) products: set of Product ==
+	return {product | product in set products & product.getName() = productName};
+
+	public setDiscount(productName: ProductName, discount: real) ==
+	for all product in set getProductsByName(productName) do
+		product.setDiscount(discount);		
+	
 	public getBalance: () ==> MerchantBalance
 	getBalance() == return balance;
 	
