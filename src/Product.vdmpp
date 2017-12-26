@@ -1,23 +1,45 @@
 class Product
 types
 	public ProductName = seq1 of char;
-	public ProductPrice = real;
-	public ProductStock = nat;	
-	public ProductDiscount = real; 
+	public ProductPrice = real inv p == p >= 0.0;
+	public ProductStock = nat	inv s == s >= 0;
+	public NetworkDiscount = Network`NetworkDiscount; 
 values
 
 instance variables
-	public name: ProductName;	
-	public price: ProductPrice;
-	public stock: ProductStock := 0;
-	public discount: ProductDiscount := 0.0;
-	inv price >= 0.0;
-	inv stock >= 0;
-	inv discount >= 0.0;
-	inv discount <= 1.0;
+	name: ProductName;	
+	price: ProductPrice;
+	stock: ProductStock := 0;
+	discount: NetworkDiscount := 0.0;
 operations
 	public Product: ProductName * ProductPrice ==> Product
 	Product(n,p) == (name := n; price := p; return self);
+	
+	public getName: () ==> ProductName
+	getName() == return name;
+	
+	public getPrice: () ==> ProductPrice
+	getPrice() == return price;
+	
+	public getStock: () ==> ProductStock
+	getStock() == return stock;
+	
+	public getDiscount: () ==> NetworkDiscount
+	getDiscount() == return discount;
+	
+	public setPrice: ProductPrice ==> ()
+	setPrice(p) == price := p
+	pre p >= 0.0;
+	
+	public setStock: ProductStock ==> ()
+	setStock(s) == stock := s
+	pre s >= 0.0;
+	
+	public setDiscount: NetworkDiscount ==> ()
+	setDiscount(d) == discount := d
+	pre d >= 0.0 and d <= 1.0;
+	
+	
 functions
 
 traces

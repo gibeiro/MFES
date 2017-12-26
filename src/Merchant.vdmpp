@@ -1,22 +1,51 @@
 class Merchant
 types
 	public MerchantName = seq1 of char;
-	public MerchantBalance = real;
+	public MerchantBalance = real	inv b == b >= 0.0;
 	public ProductName = Product`ProductName;
 	public NetworkFee = Network`NetworkFee;
 values
 
 instance variables
-	public name: MerchantName;
-	public balance: MerchantBalance;
-	public products: map ProductName to Product := {|->};
-	public fee: NetworkFee := 0;	
-	inv balance >= 0.0;
-	inv fee >= 0.0;
-	inv fee <= 1.0;
+	name: MerchantName;
+	balance: MerchantBalance;
+	fee: NetworkFee := 0;	
+	products: map ProductName to Product := {|->};
+		
 operations
 	public Merchant: MerchantName * MerchantBalance ==> Merchant
 	Merchant(n,b) == (name := n; balance := b; return self);
+	
+	public getProduct: ProductName ==> Product
+	getProduct(n) == return products(n)
+	pre n in set dom products;
+	
+	public getBalance: () ==> MerchantBalance
+	getBalance() == return balance;
+	
+	public getFee: () ==> NetworkFee
+	getFee() == return fee;
+	
+	public getName: () ==> MerchantName
+	getName() == return name;
+	
+	public setBalance: MerchantBalance ==> ()
+	setBalance(b) == balance := b;
+	
+	public setFee: NetworkFee ==> ()
+	setFee(f) == fee := f;
+	
+	public addProduct: Product ==> ()
+	addProduct(p) == products := products munion {p.getName() |-> p}
+	pre p not in set rng products;
+	
+	public removeProduct: ProductName ==> Product
+	removeProduct(n) == (
+		dcl product: Product := self.getProduct(n);
+		products := {n} <-: products;
+		return product;
+	) pre n in set dom products;	
+	
 functions
 
 traces
