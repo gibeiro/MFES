@@ -1,0 +1,20 @@
+class Test
+
+operations
+
+  protected assertTrue: bool ==> ()
+   assertTrue(arg) == return
+   pre arg;
+
+   protected assertEqual: ? * ? ==> ()
+   assertEqual(expected, actual) ==
+     if expected <> actual then (
+        IO`print("Actual value (");
+        IO`print(actual);
+        IO`print(") different from expected (");
+        IO`print(expected);
+        IO`println(")\n");
+     )
+   post expected = actual 
+
+end Test

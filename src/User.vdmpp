@@ -1,0 +1,28 @@
+class User
+types
+	public UserBalance = real inv b == b >= 0.0;
+	public UserName = seq1 of char;
+values
+
+instance variables
+	protected name: UserName := "";
+	protected balance: UserBalance := 0.0;
+	protected referrer: ? := nil;
+	inv referrer = nil or isofclass(User, referrer) ;
+operations
+	
+	public getName: () ==> UserName
+	getName() == return name;
+	
+	public getBalance: () ==> UserBalance
+	getBalance() == return balance;
+	
+	public setBalance: UserBalance ==> ()
+	setBalance(b) == balance := b
+	pre b >= 0.0;	
+	
+functions
+	
+traces
+
+end User
