@@ -28,7 +28,7 @@ operations
 	
 	public removeProduct: ProductName ==> Product
 	removeProduct(n) == (
-		dcl product: Product := self.getProduct(n);
+		dcl product: Product := getProduct(n);
 		products := {n} <-: products;
 		return product;
 	) pre n in set dom products;	
