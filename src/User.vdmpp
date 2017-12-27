@@ -5,9 +5,9 @@ types
 values
 
 instance variables
-	protected name: UserName := "";
-	protected balance: UserBalance := 0.0;
-	protected referrer: ? := nil;
+	protected name: UserName;
+	protected balance: UserBalance;
+	protected referrer: ?;
 	inv referrer = nil or isofclass(User, referrer) ;
 operations
 	

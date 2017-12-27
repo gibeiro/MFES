@@ -1,14 +1,14 @@
-class TestUser
-types
--- TODO Define types here
-values
--- TODO Define values here
-instance variables
--- TODO Define instance variables here
+class TestUser is subclass of Test
+
 operations
--- TODO Define operations here
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
+	public static TestUserMethods: () ==> ()
+	TestUserMethods() == (
+		dcl name: User`UserName := "TestUser";
+		dcl balance: User`UserBalance := 100; 
+		dcl user: User := new Customer(nil,name,0.0);
+		assertEqual(name,user.getName());
+		user.setBalance(balance);
+		assertEqual(balance,user.getBalance());
+	);
+
 end TestUser

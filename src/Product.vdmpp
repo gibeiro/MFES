@@ -15,6 +15,9 @@ operations
 	public Product: ProductName * ProductPrice ==> Product
 	Product(n,p) == (name := n; price := p; return self);
 	
+	public Product: ProductName * ProductPrice * ProductStock * NetworkDiscount ==> Product
+	Product(n,p,s,d) == (name := n; price := p; stock := s; discount := d; return self);
+	
 	public getName: () ==> ProductName
 	getName() == return name;
 	

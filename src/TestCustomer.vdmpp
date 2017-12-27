@@ -1,7 +1,7 @@
 class TestCustomer is subclass of Test
 
 operations
-	public TestCustomerMethods : () ==> ()
+	public static TestCustomerMethods : () ==> ()
 	TestCustomerMethods() == (
 		dcl customer: Customer := new Customer(nil,"TestCustomer",1000.0);
 		assertTrue(customer.getCredits() = 0.0);

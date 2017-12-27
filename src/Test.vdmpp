@@ -1,15 +1,15 @@
 class Test
 
 operations
-	protected assertTrue: bool ==> ()
+	protected static assertTrue: bool ==> ()
 	assertTrue(arg) == return
 	pre arg;
 	 
-	protected assertFalse: bool ==> ()
+	protected static assertFalse: bool ==> ()
 	assertFalse(arg) == return
 	pre not arg;
 	
-	protected assertEqual: ? * ? ==> ()
+	protected static assertEqual: ? * ? ==> ()
 	assertEqual(expected, actual) ==
 	if expected <> actual then (
 		IO`print("Actual value (");
@@ -17,6 +17,6 @@ operations
 		IO`print(") different from expected (");
 		IO`print(expected);
 		IO`println(")\n");
-	) post expected = actual 
+	) post expected = actual
 
 end Test
