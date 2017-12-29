@@ -3,7 +3,7 @@ class TestMerchant is subclass of Test
 operations
 	public static TestMerchantMethods : () ==> ()
 	TestMerchantMethods() == (
-		dcl merchant: Merchant := new Merchant(nil,"TestMerchant",1000.0);
+		dcl merchant: Merchant := new Merchant(undefined,"TestMerchant",1000.0);
 		dcl product_name: Product`ProductName := "TestProduct";
 		dcl product: Product := new Product(product_name,15.0,100,0.1);		
 		assertTrue(merchant.getFee() = 0.0);

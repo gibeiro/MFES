@@ -9,7 +9,7 @@ instance variables
 	products: map ProductName to Product := {|->};
 		
 operations
-	public Merchant: ? * UserName * UserBalance ==> Merchant
+	public Merchant: User * UserName * UserBalance ==> Merchant
 	Merchant(r,n,b) == (referrer := r; name := n; balance := b; return self);
 
 	public getFee: () ==> NetworkFee
@@ -31,7 +31,7 @@ operations
 		dcl product: Product := getProduct(n);
 		products := {n} <-: products;
 		return product;
-	) pre n in set dom products;	
+	);	
 	
 functions
 

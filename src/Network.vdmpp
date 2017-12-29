@@ -43,8 +43,8 @@ operations
 	getMerchant(n) == return merchants(n)
 	pre n in set dom merchants;	
 	
-	public purchase: Currency * CustomerName * MerchantName * ProductName * nat1 ==> ()
-	purchase(currency,c,m,p,quantity) == (
+	public purchaseProduct: Currency * CustomerName * MerchantName * ProductName * nat1 ==> ()
+	purchaseProduct(currency,c,m,p,quantity) == (
 		dcl customer: Customer := removeCustomer(c);
 		dcl merchant: Merchant := removeMerchant(m);
 		dcl product: Product := merchant.removeProduct(p);
@@ -61,6 +61,20 @@ operations
 		merchant.addProduct(product);
 		addMerchant(merchant);
 		addCustomer(customer);
+	);
+	
+	public transferCredits: CustomerName * CustomerName * NetworkCredits ==> ()
+	transferCredits(f,t,amount) == (
+		dcl source: Customer := removeCustomer(f);
+		dcl dest: Customer := removeCustomer(t);
+		dcl source_credits: NetworkCredits := source.getCredits();
+		dcl dest_credits: NetworkCredits := dest.getCredits();
+		source_credits := source_credits - amount;
+		dest_credits := dest_credits + amount;
+		source.setCredits(source_credits);
+		dest.setCredits(dest_credits);
+		addCustomer(source);
+		addCustomer(dest);
 	);
 	
 functions
