@@ -3,16 +3,29 @@ types
 	public NetworkFee = real inv f == f >= 0.0 and f <= 1.0;
 	public NetworkDiscount = real	inv d == d >= 0.0 and d <= 1.0;
 	public NetworkCredits = real inv c == c >= 0.0;
+	public NetworkBonus = real inv b == b >= 0.0 and b <= 1.0;
 	public Currency = <Money> | <Credit>;
 	public ProductName = Product`ProductName;
+	public ProductStock = Product`ProductStock;
 	public MerchantName = User`UserName;	
 	public CustomerName = User`UserName;
+		
 values
 
 instance variables
-	public merchants: map MerchantName to Merchant := {|->};
-	public customers: map CustomerName to Customer := {|->};
+	fee: NetworkFee := 0.10;
+	merchants: map MerchantName to Merchant := {|->};
+	customers: map CustomerName to Customer := {|->};
 operations
+	public Network: NetworkFee ==> Network
+	Network(b) == (fee := b; return self);
+	
+	public getFee: () ==> NetworkFee
+	getFee() == return fee;
+	
+	public setFee: NetworkFee ==> ()
+	setFee(f) == fee := f;
+
 	public addCustomer: Customer ==> ()
 	addCustomer(c) == customers := customers munion {c.getName() |-> c}
 	pre c not in set rng customers;
@@ -43,28 +56,30 @@ operations
 	getMerchant(n) == return merchants(n)
 	pre n in set dom merchants;	
 	
-	public purchaseProduct: Currency * CustomerName * MerchantName * ProductName * nat1 ==> ()
+	public purchaseProduct: Currency * CustomerName * MerchantName * ProductName * ProductStock ==> ()
 	purchaseProduct(currency,c,m,p,quantity) == (
-		dcl customer: Customer := removeCustomer(c);
-		dcl merchant: Merchant := removeMerchant(m);
-		dcl product: Product := merchant.removeProduct(p);
+		dcl customer: Customer := getCustomer(c);
+		dcl referrer: Customer := customer.getReferrer();
+		dcl merchant: Merchant := getMerchant(m);
+		dcl product: Product := merchant.getProduct(p);
 		dcl cost: real := product.getPrice() * quantity;
-		dcl discount: real := 1.0 - product.getDiscount();
-		dcl fee: real := 1 - merchant.getFee();
+		dcl discount: real := product.getDiscount() * cost;
+		dcl maintenance: real := fee * cost;
+		dcl bonus: real := maintenance * merchant.getBonus();
 		product.setStock(product.getStock() - quantity);
 		if(currency = <Credit>) then
 			customer.setCredits(customer.getCredits() - cost);	
 		if(currency = <Money>) then (
-			customer.setBalance(customer.getBalance() - cost * discount);
-			merchant.setBalance(merchant.getBalance() + cost * fee);
+			customer.setBalance(customer.getBalance() - cost);
+			customer.setCredits(customer.getCredits() + discount);
+			merchant.setBalance(merchant.getBalance() + cost - maintenance + bonus);
+			if(referrer <> undefined)
+			then referrer.setCredits(referrer.getCredits() + maintenance);
 		);
-		merchant.addProduct(product);
-		addMerchant(merchant);
-		addCustomer(customer);
 	);
 	
-	public transferCredits: CustomerName * CustomerName * NetworkCredits ==> ()
-	transferCredits(f,t,amount) == (
+	public transferCredit: CustomerName * CustomerName * NetworkCredits ==> ()
+	transferCredit(f,t,amount) == (
 		dcl source: Customer := removeCustomer(f);
 		dcl dest: Customer := removeCustomer(t);
 		dcl source_credits: NetworkCredits := source.getCredits();

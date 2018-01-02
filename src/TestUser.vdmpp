@@ -5,7 +5,7 @@ operations
 	TestUserMethods() == (
 		dcl name: User`UserName := "TestUser";
 		dcl balance: User`UserBalance := 100; 
-		dcl user: User := new Customer(nil,name,0.0);
+		dcl user: User := new Customer(undefined,name,0.0);
 		assertEqual(name,user.getName());
 		user.setBalance(balance);
 		assertEqual(balance,user.getBalance());

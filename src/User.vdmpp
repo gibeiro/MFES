@@ -7,8 +7,6 @@ values
 instance variables
 	protected name: UserName;
 	protected balance: UserBalance;
-	protected referrer: User;
-	--inv referrer = nil or isofclass(User, referrer) ;
 operations
 	
 	public getName: () ==> UserName

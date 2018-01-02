@@ -1,22 +1,16 @@
 class Merchant is subclass of User
 types
 	public ProductName = Product`ProductName;
-	public NetworkFee = Network`NetworkFee;
+	public NetworkBonus = Network`NetworkBonus;
 values
 
 instance variables
-	fee: NetworkFee := 0;	
+	bonus: NetworkBonus := 0;
 	products: map ProductName to Product := {|->};
 		
 operations
-	public Merchant: User * UserName * UserBalance ==> Merchant
-	Merchant(r,n,b) == (referrer := r; name := n; balance := b; return self);
-
-	public getFee: () ==> NetworkFee
-	getFee() == return fee;
-	
-	public setFee: NetworkFee ==> ()
-	setFee(f) == fee := f;
+	public Merchant: Merchant * UserName * UserBalance ==> Merchant
+	Merchant(r,n,b) == (r.incrementReferrals(); name := n; balance := b; return self);	
 	
 	public getProduct: ProductName ==> Product
 	getProduct(n) == return products(n)
@@ -31,7 +25,17 @@ operations
 		dcl product: Product := getProduct(n);
 		products := {n} <-: products;
 		return product;
-	);	
+	);
+	
+	public getBonus: () ==> NetworkBonus
+	getBonus() == return bonus;
+	
+	public incrementReferrals: () ==> ()
+	incrementReferrals() == (
+		dcl nr_referrals: nat := 10 * bonus / (1 - bonus);
+		nr_referrals := nr_referrals + 1;
+		bonus := nr_referrals / (nr_referrals + 10);
+	);
 	
 functions
 

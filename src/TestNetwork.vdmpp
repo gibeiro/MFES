@@ -1,7 +1,55 @@
 class TestNetwork is subclass of Test
 
-operations
-
-traces
+	operations
+		public static TestNetworkMethods: () ==> ()
+		TestNetworkMethods() == (
+			dcl network: Network := new Network();
+			dcl fee: Network`NetworkFee := 0.10;	
+			dcl balance: User`UserBalance := 100;				
+			dcl customer1: Customer := new Customer(undefined,"customer1",0.0);
+			dcl customer2: Customer := new Customer(customer1,"customer2",balance);
+			dcl merchant1: Merchant := new Merchant(undefined,"merchant1",0.0);
+			dcl merchant2: Merchant := new Merchant(merchant1,"merchant2",0.0);
+			dcl discount: Network`NetworkDiscount := 0.15;
+			dcl price: Product`ProductPrice := 50;
+			dcl product1: Product := new Product("product1",15.0,1,0.0);
+			dcl product2: Product := new Product("product2",100.0,1,discount);
+			merchant1.addProduct(product1);
+			merchant2.addProduct(product2);
+			
+			network.setFee(fee);
+			assertEqual(fee, network.getFee());				
+			
+			
+			network.addCustomer(customer1);
+			network.addCustomer(customer2);
+			network.addMerchant(merchant1);
+			network.addMerchant(merchant2);
+			
+			network.purchaseProduct(
+				<Money>,
+				customer2.getName(),
+				merchant2.getName(),
+				product2.getName(),
+				1
+			);
+			
+			assertTrue(customer2.getBalance() = balance - price);
+			assertTrue(customer2.getCredits() = discount * price);
+			assertTrue(merchant2.getBalance() = price - network.getFee() * price);
+			
+			assertTrue(customer1.getCredits() > 0.0);
+			assertTrue(merchant1.getBonus() > 0.0);			
+			
+			network.transferCredit(
+				customer1.getName(),
+				customer2.getName(),
+				customer1.getCredits()
+			);
+			
+			assertTrue(customer1.getCredits() = 0);
+			assertTrue(customer2.getCredits() > discount * price);
+		);
+	traces
 
 end TestNetwork
