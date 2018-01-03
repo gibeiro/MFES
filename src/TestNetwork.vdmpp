@@ -1,30 +1,33 @@
-class TestNetwork is subclass of Test
+class TestNetwork is subclass of TestCase
 
 	operations
-		public static TestNetworkMethods: () ==> ()
-		TestNetworkMethods() == (
-			dcl network: Network := new Network();
+		public testNetworkMethods: () ==> ()
+		testNetworkMethods() == (
+			dcl network: Network := new Network(0.0);
 			dcl fee: Network`NetworkFee := 0.10;	
 			dcl balance: User`UserBalance := 100;				
-			dcl customer1: Customer := new Customer(undefined,"customer1",0.0);
+			dcl customer1: Customer := new Customer("customer1",0.0);
 			dcl customer2: Customer := new Customer(customer1,"customer2",balance);
-			dcl merchant1: Merchant := new Merchant(undefined,"merchant1",0.0);
+			dcl merchant1: Merchant := new Merchant("merchant1",0.0);
 			dcl merchant2: Merchant := new Merchant(merchant1,"merchant2",0.0);
 			dcl discount: Network`NetworkDiscount := 0.15;
 			dcl price: Product`ProductPrice := 50;
 			dcl product1: Product := new Product("product1",15.0,1,0.0);
-			dcl product2: Product := new Product("product2",100.0,1,discount);
+			dcl product2: Product := new Product("product2",price,1,discount);
 			merchant1.addProduct(product1);
-			merchant2.addProduct(product2);
+			merchant2.addProduct(product2);			
 			
 			network.setFee(fee);
-			assertEqual(fee, network.getFee());				
+			assertTrue(fee = network.getFee());		
 			
 			
 			network.addCustomer(customer1);
 			network.addCustomer(customer2);
 			network.addMerchant(merchant1);
 			network.addMerchant(merchant2);
+			
+			assertTrue(network.getCustomers() =	{customer2, customer1});			
+			assertTrue(network.getMerchants() =	{merchant2, merchant1});
 			
 			network.purchaseProduct(
 				<Money>,
@@ -49,6 +52,12 @@ class TestNetwork is subclass of Test
 			
 			assertTrue(customer1.getCredits() = 0);
 			assertTrue(customer2.getCredits() > discount * price);
+			
+			network.removeCustomer(customer1.getName());
+			network.removeMerchant(merchant1.getName());
+			
+			assertTrue(network.getCustomers() =	{customer2});			
+			assertTrue(network.getMerchants() =	{merchant2});
 		);
 	traces
 

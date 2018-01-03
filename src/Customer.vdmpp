@@ -5,11 +5,14 @@ values
 
 instance variables	
 	credits: NetworkCredits := 0.0;
-	referrer: Customer;
+	referrer: Customer := undefined;
 	
 operations
 	public Customer: Customer * UserName * UserBalance ==> Customer
 	Customer(r,n,b) == (referrer := r; name := n; balance := b; return self);
+	
+	public Customer: UserName * UserBalance ==> Customer
+	Customer(n,b) == (name := n; balance := b; return self);
 	
 	public getCredits: () ==> NetworkCredits
 	getCredits() == return credits;
@@ -17,7 +20,7 @@ operations
 	public setCredits: NetworkCredits ==> ()
 	setCredits(c) == credits := c;
 	
-	public getReferrer: () ==> User
+	public getReferrer: () ==> Customer
 	getReferrer() == return referrer;
 	
 functions

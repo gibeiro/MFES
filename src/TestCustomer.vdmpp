@@ -1,12 +1,14 @@
-class TestCustomer is subclass of Test
+class TestCustomer is subclass of TestCase
 
 operations
-	public static TestCustomerMethods : () ==> ()
-	TestCustomerMethods() == (
-		dcl customer: Customer := new Customer(undefined,"TestCustomer",1000.0);
-		assertTrue(customer.getCredits() = 0.0);
-		customer.setCredits(25.0);
-		assertTrue(customer.getCredits() = 25.0);
+	public testCustomerMethods : () ==> ()
+	testCustomerMethods() == (
+		dcl customer1: Customer := new Customer("TestCustomer1",1000.0);
+		dcl customer2: Customer := new Customer(customer1,"TestCustomer2",1000.0);		
+		assertTrue(customer1.getCredits() = 0.0);
+		customer1.setCredits(25.0);
+		assertTrue(customer1.getCredits() = 25.0);
+		assertTrue(customer2.getReferrer() = customer1);		
 	);
 
 end TestCustomer

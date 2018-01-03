@@ -1,14 +1,14 @@
-class TestUser is subclass of Test
+class TestUser is subclass of TestCase
 
 operations
-	public static TestUserMethods: () ==> ()
-	TestUserMethods() == (
+	public testUserMethods: () ==> ()
+	testUserMethods() == (
 		dcl name: User`UserName := "TestUser";
 		dcl balance: User`UserBalance := 100; 
-		dcl user: User := new Customer(undefined,name,0.0);
-		assertEqual(name,user.getName());
+		dcl user: User := new Customer(name,0.0);
+		assertTrue(name = user.getName()); 
 		user.setBalance(balance);
-		assertEqual(balance,user.getBalance());
+		assertTrue(balance = user.getBalance());
 	);
 
 end TestUser

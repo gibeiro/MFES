@@ -1,4 +1,5 @@
 class Network
+
 types
 	public NetworkFee = real inv f == f >= 0.0 and f <= 1.0;
 	public NetworkDiscount = real	inv d == d >= 0.0 and d <= 1.0;
@@ -10,15 +11,20 @@ types
 	public MerchantName = User`UserName;	
 	public CustomerName = User`UserName;
 		
-values
-
 instance variables
 	fee: NetworkFee := 0.10;
 	merchants: map MerchantName to Merchant := {|->};
 	customers: map CustomerName to Customer := {|->};
+	
 operations
 	public Network: NetworkFee ==> Network
 	Network(b) == (fee := b; return self);
+	
+	public getMerchants: () ==> set of Merchant
+	getMerchants() == return rng merchants;
+	
+	public getCustomers: () ==> set of Customer
+	getCustomers() == return rng customers;
 	
 	public getFee: () ==> NetworkFee
 	getFee() == return fee;
@@ -34,19 +40,13 @@ operations
 	addMerchant(m) == merchants := merchants munion {m.getName() |-> m}
 	pre m not in set rng merchants;
 	
-	public removeCustomer: CustomerName ==> Customer
-	removeCustomer(n) == (
-		dcl customer: Customer := self.getCustomer(n);
-		customers := {n} <-: customers;
-		return customer;
-	) pre n in set dom customers;
+	public removeCustomer: CustomerName ==> ()
+	removeCustomer(n) == customers := {n} <-: customers
+	pre n in set dom customers;
 	
-	public removeMerchant: MerchantName ==> Merchant
-	removeMerchant(n) == (
-		dcl merchant: Merchant := self.getMerchant(n);
-		merchants := {n} <-: merchants;
-		return merchant;
-	) pre n in set dom merchants;	
+	public removeMerchant: MerchantName ==> ()
+	removeMerchant(n) == merchants := {n} <-: merchants
+	pre n in set dom merchants;	
 	
 	public getCustomer: CustomerName ==> Customer
 	getCustomer(n) == return customers(n)
@@ -80,10 +80,11 @@ operations
 	
 	public transferCredit: CustomerName * CustomerName * NetworkCredits ==> ()
 	transferCredit(f,t,amount) == (
-		dcl source: Customer := removeCustomer(f);
-		dcl dest: Customer := removeCustomer(t);
+		dcl source: Customer := getCustomer(f);
+		dcl dest: Customer := getCustomer(t);
 		dcl source_credits: NetworkCredits := source.getCredits();
 		dcl dest_credits: NetworkCredits := dest.getCredits();
+		removeCustomer(f); removeCustomer(t);
 		source_credits := source_credits - amount;
 		dest_credits := dest_credits + amount;
 		source.setCredits(source_credits);
@@ -92,8 +93,7 @@ operations
 		addCustomer(dest);
 	);
 	
-functions
-
-traces
-
+	public static runTests: () ==> ()
+	runTests() == new TestRunner().run();
+	
 end Network

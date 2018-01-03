@@ -10,7 +10,10 @@ instance variables
 		
 operations
 	public Merchant: Merchant * UserName * UserBalance ==> Merchant
-	Merchant(r,n,b) == (r.incrementReferrals(); name := n; balance := b; return self);	
+	Merchant(r,n,b) == (r.incrementReferrals(); name := n; balance := b; return self);
+	
+	public Merchant: UserName * UserBalance ==> Merchant
+	Merchant(n,b) == (name := n; balance := b; return self);	
 	
 	public getProduct: ProductName ==> Product
 	getProduct(n) == return products(n)
