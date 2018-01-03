@@ -1,0 +1,20 @@
+class TestProduct is subclass of TestCase
+
+operations
+	public testProductMethods: () ==> ()
+	testProductMethods() == (
+		dcl name: Product`ProductName := "TestProduct";
+		dcl price: Product`ProductPrice := 15;
+		dcl stock: Product`ProductStock := 100;
+		dcl discount: Network`NetworkDiscount := 0.1;
+		dcl product: Product := new Product(name,0,0,0);
+		assertTrue(name = product.getName());
+		product.setPrice(price);
+		assertTrue(price = product.getPrice());
+		product.setStock(stock);
+		assertTrue(stock = product.getStock());
+		product.setDiscount(discount);
+		assertTrue(discount = product.getDiscount());
+	);
+
+end TestProduct

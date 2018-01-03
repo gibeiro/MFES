@@ -17,7 +17,8 @@ public class TestMerchant extends TestCase {
     assertTrue(merchant.getBonus().doubleValue() > 0.0);
     merchant.addProduct(product);
     assertTrue(Utils.equals(merchant.getProduct(product_name), product));
-    assertTrue(Utils.equals(merchant.removeProduct(product_name), product));
+    merchant.removeProduct(product_name);
+    assertTrue(Utils.empty(merchant.getProducts()));
   }
 
   public TestMerchant() {}

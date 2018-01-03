@@ -19,7 +19,7 @@ public class TestNetwork extends TestCase {
     Number discount = 0.15;
     Number price = 50L;
     Product product1 = new Product("product1", 15.0, 1L, 0.0);
-    Product product2 = new Product("product2", price, 1L, discount);
+    Product product2 = new Product("product2", price, 2L, discount);
     merchant1.addProduct(product1);
     merchant2.addProduct(product2);
     network.setFee(fee);
@@ -51,6 +51,13 @@ public class TestNetwork extends TestCase {
     network.removeMerchant(merchant1.getName());
     assertTrue(Utils.equals(network.getCustomers(), SetUtil.set(customer2)));
     assertTrue(Utils.equals(network.getMerchants(), SetUtil.set(merchant2)));
+    network.getMerchant(merchant2.getName()).getProduct(product2.getName()).setPrice(5.0);
+    network.purchaseProduct(
+        mfes.quotes.CreditQuote.getInstance(),
+        customer2.getName(),
+        merchant2.getName(),
+        product2.getName(),
+        1L);
   }
 
   public TestNetwork() {}

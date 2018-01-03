@@ -1,0 +1,60 @@
+\begin{vdmpp}[breaklines=true]
+class Customer is subclass of User
+
+types
+ public NetworkCredits = Network`NetworkCredits;
+
+instance variables 
+ credits: NetworkCredits := (*@\vdmnotcovered{0.0}@*);
+ referrer: Customer := (*@\vdmnotcovered{undefined}@*);
+ 
+operations
+(*@
+\label{Customer:11}
+@*)
+ public Customer: Customer * UserName * UserBalance ==> Customer
+ Customer(r,n,b) == (referrer := r; name := n; setBalance((*@\vdmnotcovered{b}@*)); (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{self}@*));
+ 
+ public Customer: UserName * UserBalance ==> Customer
+ Customer(n,b) == (name := n; setBalance((*@\vdmnotcovered{b}@*)); (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{self}@*));
+ 
+(*@
+\label{getCredits:17}
+@*)
+ pure public getCredits: () ==> NetworkCredits
+ getCredits() == (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{credits}@*);
+ 
+(*@
+\label{setCredits:20}
+@*)
+ public setCredits: NetworkCredits ==> ()
+ setCredits(c) == (*@\vdmnotcovered{credits}@*) := (*@\vdmnotcovered{c}@*)
+ pre c >= (*@\vdmnotcovered{0.0}@*);
+(*@
+\label{getReferrer:23}
+@*)
+ 
+ pure public getReferrer: () ==> Customer
+ getReferrer() == (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{referrer}@*);
+
+end Customer
+\end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[Customer:11]{Customer} & 11&0.0\% & 0 \\
+\hline
+\hyperref[getCredits:17]{getCredits} & 17&0.0\% & 0 \\
+\hline
+\hyperref[getReferrer:23]{getReferrer} & 23&0.0\% & 0 \\
+\hline
+\hyperref[setCredits:20]{setCredits} & 20&0.0\% & 0 \\
+\hline
+\hline
+Customer.vdmpp & & 0.0\% & 0 \\
+\hline
+\end{longtable}
+

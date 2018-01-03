@@ -19,7 +19,7 @@ public class Merchant extends User {
 
     r.incrementReferrals();
     name = n;
-    balance = b;
+    setBalance(b);
     return;
   }
 
@@ -37,22 +37,20 @@ public class Merchant extends User {
 
     return ((Product) Utils.get(products, n));
   }
-  
+
   public VDMSet getProducts() {
 
-	    return MapUtil.rng(Utils.copy(products));
-	  }
+    return MapUtil.rng(Utils.copy(products));
+  }
 
   public void addProduct(final Product p) {
 
     products = MapUtil.munion(Utils.copy(products), MapUtil.map(new Maplet(p.getName(), p)));
   }
 
-  public Product removeProduct(final String n) {
+  public void removeProduct(final String n) {
 
-    Product product = getProduct(n);
     products = MapUtil.domResBy(SetUtil.set(n), Utils.copy(products));
-    return product;
   }
 
   public Number getBonus() {

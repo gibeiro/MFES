@@ -1,0 +1,91 @@
+\begin{vdmpp}[breaklines=true]
+class Merchant is subclass of User
+types
+ public ProductName = Product`ProductName;
+ public NetworkBonus = Network`NetworkBonus;
+values
+
+instance variables
+ bonus: NetworkBonus := (*@\vdmnotcovered{0}@*);
+ products: map ProductName to Product := (*@\vdmnotcovered{\{}@*)|->};
+  
+operations
+(*@
+\label{Merchant:12}
+@*)
+ public Merchant: Merchant * UserName * UserBalance ==> Merchant
+ Merchant(r,n,b) == (r.incrementReferrals(); (*@\vdmnotcovered{name}@*) := n; setBalance(b); (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{self}@*));
+ 
+ public Merchant: UserName * UserBalance ==> Merchant
+ Merchant(n,b) == (name := n; balance := (*@\vdmnotcovered{b}@*); return (*@\vdmnotcovered{self}@*)); 
+ 
+(*@
+\label{getProduct:18}
+@*)
+ pure public getProduct: ProductName ==> Product
+ getProduct(n) == return products((*@\vdmnotcovered{n}@*))
+ pre (*@\vdmnotcovered{n}@*) (*@\vdmnotcovered{in}@*) set (*@\vdmnotcovered{dom}@*) (*@\vdmnotcovered{products}@*);
+ 
+(*@
+\label{getProducts:22}
+@*)
+ pure public getProducts: () ==> set of Product
+ getProducts() == return rng (*@\vdmnotcovered{products}@*);
+ 
+(*@
+\label{addProduct:25}
+@*)
+ public addProduct: Product ==> ()
+ addProduct(p) == (*@\vdmnotcovered{products}@*) := products munion {(*@\vdmnotcovered{p}@*).(*@\vdmnotcovered{getName}@*)() (*@\vdmnotcovered{|->}@*) (*@\vdmnotcovered{p}@*)}
+ pre p.getName() not in set dom (*@\vdmnotcovered{products}@*);
+ 
+(*@
+\label{removeProduct:29}
+@*)
+ public removeProduct: ProductName ==> ()
+ removeProduct(n) == products := {n} <-: (*@\vdmnotcovered{products}@*)
+ pre (*@\vdmnotcovered{n}@*) (*@\vdmnotcovered{in}@*) set dom (*@\vdmnotcovered{products}@*);
+ 
+ pure public getBonus: () ==> NetworkBonus
+ getBonus() == return (*@\vdmnotcovered{bonus}@*);
+ 
+(*@
+\label{getBonus:36}
+@*)
+ public incrementReferrals: () ==> ()
+ incrementReferrals() == (*@\vdmnotcovered{(}@*)
+  dcl nr_referrals: nat := 10 * bonus / (1 - (*@\vdmnotcovered{bonus}@*));
+(*@
+\label{incrementReferrals:39}
+@*)
+  nr_referrals := nr_referrals + (*@\vdmnotcovered{1}@*);
+  bonus := nr_referrals / (nr_referrals (*@\vdmnotcovered{+}@*) (*@\vdmnotcovered{10}@*));
+ );
+
+end Merchant
+\end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[Merchant:12]{Merchant} & 12&0.0\% & 0 \\
+\hline
+\hyperref[addProduct:25]{addProduct} & 25&0.0\% & 0 \\
+\hline
+\hyperref[getBonus:36]{getBonus} & 36&0.0\% & 0 \\
+\hline
+\hyperref[getProduct:18]{getProduct} & 18&0.0\% & 0 \\
+\hline
+\hyperref[getProducts:22]{getProducts} & 22&0.0\% & 0 \\
+\hline
+\hyperref[incrementReferrals:39]{incrementReferrals} & 39&0.0\% & 0 \\
+\hline
+\hyperref[removeProduct:29]{removeProduct} & 29&0.0\% & 0 \\
+\hline
+\hline
+Merchant.vdmpp & & 0.0\% & 0 \\
+\hline
+\end{longtable}
+

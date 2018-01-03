@@ -1,0 +1,92 @@
+\begin{vdmpp}[breaklines=true]
+class TestNetwork is subclass of TestCase
+
+ operations
+(*@
+\label{testNetworkMethods:4}
+@*)
+  public testNetworkMethods: () ==> ()
+  testNetworkMethods() == (*@\vdmnotcovered{(}@*)
+   dcl network: Network := new Network((*@\vdmnotcovered{0.0}@*));
+   dcl fee: Network`NetworkFee := (*@\vdmnotcovered{0.10}@*); 
+   dcl balance: User`UserBalance := (*@\vdmnotcovered{100}@*);    
+   dcl customer1: Customer := new Customer((*@\vdmnotcovered{"customer1"}@*),(*@\vdmnotcovered{0.0}@*));
+   dcl customer2: Customer := new Customer((*@\vdmnotcovered{customer1}@*),"customer2",(*@\vdmnotcovered{balance}@*));
+   dcl merchant1: Merchant := new Merchant("merchant1",(*@\vdmnotcovered{0.0}@*));
+   dcl merchant2: Merchant := new Merchant(merchant1,"merchant2",(*@\vdmnotcovered{0.0}@*));
+   dcl discount: Network`NetworkDiscount := (*@\vdmnotcovered{0.15}@*);
+   dcl price: Product`ProductPrice := (*@\vdmnotcovered{50}@*);
+   dcl product1: Product := new Product("product1",15.0,1,(*@\vdmnotcovered{0.0}@*));
+   dcl product2: Product := (*@\vdmnotcovered{new}@*) Product("product2",price,2,(*@\vdmnotcovered{discount}@*));
+   merchant1.addProduct((*@\vdmnotcovered{product1}@*));
+   (*@\vdmnotcovered{merchant2}@*).addProduct((*@\vdmnotcovered{product2}@*));   
+   
+   network.setFee((*@\vdmnotcovered{fee}@*));
+   assertTrue(fee (*@\vdmnotcovered{=}@*) network.(*@\vdmnotcovered{getFee}@*)());  
+   
+   
+   network.addCustomer((*@\vdmnotcovered{customer1}@*));
+   (*@\vdmnotcovered{network}@*).addCustomer((*@\vdmnotcovered{customer2}@*));
+   network.addMerchant((*@\vdmnotcovered{merchant1}@*));
+   (*@\vdmnotcovered{network}@*).addMerchant((*@\vdmnotcovered{merchant2}@*));
+   
+   assertTrue((*@\vdmnotcovered{network}@*).(*@\vdmnotcovered{getCustomers}@*)() (*@\vdmnotcovered{=}@*) (*@\vdmnotcovered{\{}@*)(*@\vdmnotcovered{customer2}@*), (*@\vdmnotcovered{customer1}@*)});   
+   (*@\vdmnotcovered{assertTrue}@*)(network.getMerchants() = {merchant2, (*@\vdmnotcovered{merchant1}@*)});
+   
+   (*@\vdmnotcovered{network}@*).purchaseProduct(
+    (*@\vdmnotcovered{<Money>}@*),
+    (*@\vdmnotcovered{customer2}@*).(*@\vdmnotcovered{getName}@*)(),
+    merchant2.(*@\vdmnotcovered{getName}@*)(),
+    product2.(*@\vdmnotcovered{getName}@*)(),
+    (*@\vdmnotcovered{1}@*)
+   );
+   
+   (*@\vdmnotcovered{assertTrue}@*)((*@\vdmnotcovered{customer2}@*).(*@\vdmnotcovered{getBalance}@*)() (*@\vdmnotcovered{=}@*) balance (*@\vdmnotcovered{-}@*) (*@\vdmnotcovered{price}@*));
+   (*@\vdmnotcovered{assertTrue}@*)((*@\vdmnotcovered{customer2}@*).(*@\vdmnotcovered{getCredits}@*)() (*@\vdmnotcovered{=}@*) discount (*@\vdmnotcovered{*}@*) (*@\vdmnotcovered{price}@*));
+   (*@\vdmnotcovered{assertTrue}@*)(merchant2.getBalance() (*@\vdmnotcovered{=}@*) price - (*@\vdmnotcovered{network}@*).(*@\vdmnotcovered{getFee}@*)() * (*@\vdmnotcovered{price}@*));
+   
+   (*@\vdmnotcovered{assertTrue}@*)((*@\vdmnotcovered{customer1}@*).(*@\vdmnotcovered{getCredits}@*)() (*@\vdmnotcovered{>}@*) (*@\vdmnotcovered{0.0}@*));
+   assertTrue(merchant1.(*@\vdmnotcovered{getBonus}@*)() (*@\vdmnotcovered{>}@*) (*@\vdmnotcovered{0.0}@*));   
+   
+   (*@\vdmnotcovered{network}@*).transferCredit(
+    customer1.(*@\vdmnotcovered{getName}@*)(),
+    (*@\vdmnotcovered{customer2}@*).(*@\vdmnotcovered{getName}@*)(),
+    (*@\vdmnotcovered{customer1}@*).(*@\vdmnotcovered{getCredits}@*)()
+   );
+   
+   (*@\vdmnotcovered{assertTrue}@*)(customer1.getCredits() = (*@\vdmnotcovered{0}@*));
+   assertTrue(customer2.(*@\vdmnotcovered{getCredits}@*)() > discount (*@\vdmnotcovered{*}@*) (*@\vdmnotcovered{price}@*));
+   
+   (*@\vdmnotcovered{network}@*).removeCustomer(customer1.(*@\vdmnotcovered{getName}@*)());
+   (*@\vdmnotcovered{network}@*).removeMerchant(merchant1.(*@\vdmnotcovered{getName}@*)());
+   
+   assertTrue(network.getCustomers() (*@\vdmnotcovered{=}@*) {(*@\vdmnotcovered{customer2}@*)});   
+   assertTrue(network.(*@\vdmnotcovered{getMerchants}@*)() = {(*@\vdmnotcovered{merchant2}@*)});
+   
+   (*@\vdmnotcovered{network}@*).getMerchant(merchant2.(*@\vdmnotcovered{getName}@*)()).getProduct(product2.(*@\vdmnotcovered{getName}@*)()).setPrice((*@\vdmnotcovered{5.0}@*));
+   
+   (*@\vdmnotcovered{network}@*).purchaseProduct(
+    (*@\vdmnotcovered{<Credit>}@*),
+    customer2.(*@\vdmnotcovered{getName}@*)(),
+    (*@\vdmnotcovered{merchant2}@*).(*@\vdmnotcovered{getName}@*)(),
+    product2.(*@\vdmnotcovered{getName}@*)(),
+    (*@\vdmnotcovered{1}@*)
+   );
+  );
+ traces
+
+end TestNetwork
+\end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[testNetworkMethods:4]{testNetworkMethods} & 4&0.0\% & 0 \\
+\hline
+\hline
+TestNetwork.vdmpp & & 0.0\% & 0 \\
+\hline
+\end{longtable}
+

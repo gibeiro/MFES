@@ -11,7 +11,7 @@ public class Customer extends User {
   public void cg_init_Customer_2(final String n, final Number b) {
 
     name = n;
-    balance = b;
+    setBalance(b);
     return;
   }
 
@@ -19,7 +19,7 @@ public class Customer extends User {
 
     referrer = r;
     name = n;
-    balance = b;
+    setBalance(b);
     return;
   }
 

@@ -1,0 +1,36 @@
+\begin{vdmpp}[breaklines=true]
+class TestMerchant is subclass of TestCase
+
+operations
+(*@
+\label{testMerchantMethods:4}
+@*)
+ public testMerchantMethods : () ==> ()
+ testMerchantMethods() == (*@\vdmnotcovered{(}@*)
+  dcl merchant: Merchant := new Merchant((*@\vdmnotcovered{"TestMerchant"}@*),(*@\vdmnotcovered{1000.0}@*));
+  dcl product_name: Product`ProductName := (*@\vdmnotcovered{"TestProduct"}@*);
+  dcl product: Product := new Product(product_name,15.0,100,(*@\vdmnotcovered{0.1}@*));  
+  (*@\vdmnotcovered{assertTrue}@*)(merchant.getBonus() (*@\vdmnotcovered{=}@*) (*@\vdmnotcovered{0.0}@*));
+  (*@\vdmnotcovered{merchant}@*).incrementReferrals();
+  (*@\vdmnotcovered{assertTrue}@*)(merchant.getBonus() > (*@\vdmnotcovered{0.0}@*));  
+  merchant.addProduct((*@\vdmnotcovered{product}@*));
+  assertTrue(merchant.getProduct(product_name) = (*@\vdmnotcovered{product}@*));
+  merchant.removeProduct((*@\vdmnotcovered{product\_name}@*));
+  assertTrue((*@\vdmnotcovered{merchant}@*).getProducts() (*@\vdmnotcovered{=}@*) (*@\vdmnotcovered{\{}@*)});
+ );
+
+end TestMerchant
+\end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[testMerchantMethods:4]{testMerchantMethods} & 4&0.0\% & 0 \\
+\hline
+\hline
+TestMerchant.vdmpp & & 0.0\% & 0 \\
+\hline
+\end{longtable}
+

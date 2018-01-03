@@ -9,15 +9,15 @@ public class Network {
   private VDMMap merchants = MapUtil.map();
   private VDMMap customers = MapUtil.map();
 
-  public void cg_init_Network_1(final Number b) {
+  public void cg_init_Network_1(final Number f) {
 
-    fee = b;
+    setFee(f);
     return;
   }
 
-  public Network(final Number b) {
+  public Network(final Number f) {
 
-    cg_init_Network_1(b);
+    cg_init_Network_1(f);
   }
 
   public VDMSet getMerchants() {
@@ -110,14 +110,10 @@ public class Network {
     Customer dest = getCustomer(t);
     Number source_credits = source.getCredits();
     Number dest_credits = dest.getCredits();
-    removeCustomer(f);
-    removeCustomer(t);
     source_credits = source_credits.doubleValue() - amount.doubleValue();
     dest_credits = dest_credits.doubleValue() + amount.doubleValue();
     source.setCredits(source_credits);
     dest.setCredits(dest_credits);
-    addCustomer(source);
-    addCustomer(dest);
   }
 
   public Network() {}

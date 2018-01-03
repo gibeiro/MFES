@@ -1,0 +1,192 @@
+\begin{vdmpp}[breaklines=true]
+class Network
+
+types
+ public NetworkFee = real inv f == f (*@\vdmnotcovered{>=}@*) (*@\vdmnotcovered{0.0}@*) and (*@\vdmnotcovered{f}@*) (*@\vdmnotcovered{<=}@*) (*@\vdmnotcovered{1.0}@*);
+ public NetworkDiscount = real inv d == d >= 0.0 and (*@\vdmnotcovered{d}@*) <= (*@\vdmnotcovered{1.0}@*);
+ public NetworkCredits = real inv c == c (*@\vdmnotcovered{>=}@*) (*@\vdmnotcovered{0.0}@*);
+ public NetworkBonus = real inv b == (*@\vdmnotcovered{b}@*) >= 0.0 (*@\vdmnotcovered{and}@*) (*@\vdmnotcovered{b}@*) (*@\vdmnotcovered{<=}@*) (*@\vdmnotcovered{1.0}@*);
+ public Currency = <Money> | <Credit>;
+ public ProductName = Product`ProductName;
+ public ProductStock = Product`ProductStock;
+ public MerchantName = User`UserName; 
+ public CustomerName = User`UserName;
+  
+instance variables
+ fee: NetworkFee := (*@\vdmnotcovered{0.10}@*);
+ merchants: map MerchantName to Merchant := (*@\vdmnotcovered{\{}@*)|->};
+ customers: map CustomerName to Customer := (*@\vdmnotcovered{\{}@*)|->};
+ 
+operations
+(*@
+\label{Network:20}
+@*)
+ public Network: NetworkFee ==> Network
+ Network(f) == (*@\vdmnotcovered{(}@*)(*@\vdmnotcovered{setFee}@*)(f); (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{self}@*));
+ 
+(*@
+\label{getMerchants:23}
+@*)
+ pure public getMerchants: () ==> set of Merchant
+ getMerchants() == return rng (*@\vdmnotcovered{merchants}@*);
+ 
+(*@
+\label{getCustomers:26}
+@*)
+ pure public getCustomers: () ==> set of Customer
+ getCustomers() == return (*@\vdmnotcovered{rng}@*) (*@\vdmnotcovered{customers}@*);
+ 
+(*@
+\label{getFee:29}
+@*)
+ pure public getFee: () ==> NetworkFee
+ getFee() == (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{fee}@*);
+ 
+(*@
+\label{setFee:32}
+@*)
+ public setFee: NetworkFee ==> ()
+ setFee(f) == fee := (*@\vdmnotcovered{f}@*)
+ pre f >= 0.0 and (*@\vdmnotcovered{f}@*) <= (*@\vdmnotcovered{1.0}@*);
+(*@
+\label{addCustomer:35}
+@*)
+
+ public addCustomer: Customer ==> ()
+ addCustomer(c) == customers := customers munion {c.getName() |-> (*@\vdmnotcovered{c}@*)}
+ pre (*@\vdmnotcovered{c}@*).(*@\vdmnotcovered{getName}@*)() not in set dom (*@\vdmnotcovered{customers}@*);
+(*@
+\label{addMerchant:39}
+@*)
+ 
+ public addMerchant: Merchant ==> ()
+ addMerchant(m) == merchants := merchants munion {(*@\vdmnotcovered{m}@*).(*@\vdmnotcovered{getName}@*)() (*@\vdmnotcovered{|->}@*) (*@\vdmnotcovered{m}@*)}
+ pre m.(*@\vdmnotcovered{getName}@*)() not in set (*@\vdmnotcovered{dom}@*) (*@\vdmnotcovered{merchants}@*);
+(*@
+\label{removeCustomer:43}
+@*)
+ 
+ public removeCustomer: CustomerName ==> ()
+ removeCustomer(n) == customers := {(*@\vdmnotcovered{n}@*)} (*@\vdmnotcovered{<-:}@*) (*@\vdmnotcovered{customers}@*)
+ pre n in set dom (*@\vdmnotcovered{customers}@*);
+(*@
+\label{removeMerchant:47}
+@*)
+ 
+ public removeMerchant: MerchantName ==> ()
+ removeMerchant(n) == merchants := {n} <-: (*@\vdmnotcovered{merchants}@*)
+ pre n (*@\vdmnotcovered{in}@*) set dom (*@\vdmnotcovered{merchants}@*); 
+(*@
+\label{getCustomer:51}
+@*)
+ 
+ pure public getCustomer: CustomerName ==> Customer
+ getCustomer(n) == return customers((*@\vdmnotcovered{n}@*))
+ pre n (*@\vdmnotcovered{in}@*) set (*@\vdmnotcovered{dom}@*) (*@\vdmnotcovered{customers}@*);
+(*@
+\label{getMerchant:55}
+@*)
+ 
+ pure public getMerchant: MerchantName ==> Merchant
+ getMerchant(n) == return merchants((*@\vdmnotcovered{n}@*))
+ pre n in set dom (*@\vdmnotcovered{merchants}@*); 
+(*@
+\label{purchaseProduct:59}
+@*)
+ 
+ public purchaseProduct: Currency * CustomerName * MerchantName * ProductName * ProductStock ==> ()
+ purchaseProduct(currency,c,m,p,quantity) == (*@\vdmnotcovered{(}@*)
+  dcl customer: Customer := getCustomer((*@\vdmnotcovered{c}@*));
+  dcl referrer: Customer := (*@\vdmnotcovered{customer}@*).(*@\vdmnotcovered{getReferrer}@*)();
+  dcl merchant: Merchant := getMerchant((*@\vdmnotcovered{m}@*));
+  dcl product: Product := (*@\vdmnotcovered{merchant}@*).(*@\vdmnotcovered{getProduct}@*)((*@\vdmnotcovered{p}@*));
+  dcl cost: real := product.getPrice() (*@\vdmnotcovered{*}@*) (*@\vdmnotcovered{quantity}@*);
+  dcl discount: real := product.getDiscount() (*@\vdmnotcovered{*}@*) (*@\vdmnotcovered{cost}@*);
+  dcl maintenance: real := (*@\vdmnotcovered{fee}@*) (*@\vdmnotcovered{*}@*) (*@\vdmnotcovered{cost}@*);
+  dcl bonus: real := maintenance * merchant.(*@\vdmnotcovered{getBonus}@*)();
+  product.setStock(product.(*@\vdmnotcovered{getStock}@*)() - (*@\vdmnotcovered{quantity}@*));
+  if(currency (*@\vdmnotcovered{=}@*) (*@\vdmnotcovered{<Credit>}@*)) then
+   customer.setCredits(customer.(*@\vdmnotcovered{getCredits}@*)() - (*@\vdmnotcovered{cost}@*)); 
+  if((*@\vdmnotcovered{currency}@*) = <Money>) then (*@\vdmnotcovered{(}@*)
+   customer.setBalance((*@\vdmnotcovered{customer}@*).(*@\vdmnotcovered{getBalance}@*)() (*@\vdmnotcovered{-}@*) (*@\vdmnotcovered{cost}@*));
+   (*@\vdmnotcovered{customer}@*).setCredits(customer.getCredits() (*@\vdmnotcovered{+}@*) (*@\vdmnotcovered{discount}@*));
+   (*@\vdmnotcovered{merchant}@*).setBalance(merchant.(*@\vdmnotcovered{getBalance}@*)() (*@\vdmnotcovered{+}@*) (*@\vdmnotcovered{cost}@*) - (*@\vdmnotcovered{maintenance}@*) + (*@\vdmnotcovered{bonus}@*));
+   if((*@\vdmnotcovered{referrer}@*) <> (*@\vdmnotcovered{undefined}@*))
+   then referrer.setCredits(referrer.getCredits() + (*@\vdmnotcovered{maintenance}@*));
+  );)
+  pre quantity (*@\vdmnotcovered{>}@*) (*@\vdmnotcovered{0}@*) (*@\vdmnotcovered{and}@*) (*@\vdmnotcovered{currency}@*) in set {<Credit>,(*@\vdmnotcovered{<Money>}@*)}
+(*@
+\label{transferCredit:81}
+@*)
+  post (*@\vdmnotcovered{getMerchant}@*)(m).getBalance() >= (*@\vdmnotcovered{quantity}@*) (*@\vdmnotcovered{*}@*)
+  getMerchant(m).getProduct(p).getPrice() (*@\vdmnotcovered{*}@*)
+  (1 - getFee() (*@\vdmnotcovered{*}@*) (1 - getMerchant((*@\vdmnotcovered{m}@*)).(*@\vdmnotcovered{getBonus}@*)()))
+  (*@\vdmnotcovered{and}@*) (*@\vdmnotcovered{getCustomer}@*)(c).(*@\vdmnotcovered{getCredits}@*)() >= quantity (*@\vdmnotcovered{*}@*)
+  getMerchant(m).getProduct(p).(*@\vdmnotcovered{getPrice}@*)() (*@\vdmnotcovered{*}@*)
+  getMerchant(m).getProduct(p).(*@\vdmnotcovered{getDiscount}@*)();
+ 
+ public transferCredit: CustomerName * CustomerName * NetworkCredits ==> ()
+ transferCredit(f,t,amount) == (*@\vdmnotcovered{(}@*)
+  dcl source: Customer := getCustomer((*@\vdmnotcovered{f}@*));
+  dcl dest: Customer := getCustomer((*@\vdmnotcovered{t}@*));
+  dcl source_credits: NetworkCredits := (*@\vdmnotcovered{source}@*).(*@\vdmnotcovered{getCredits}@*)();
+  dcl dest_credits: NetworkCredits := dest.(*@\vdmnotcovered{getCredits}@*)();
+  (*@\vdmnotcovered{source\_credits}@*) := (*@\vdmnotcovered{source\_credits}@*) (*@\vdmnotcovered{-}@*) (*@\vdmnotcovered{amount}@*);
+  dest_credits := dest_credits (*@\vdmnotcovered{+}@*) (*@\vdmnotcovered{amount}@*);
+(*@
+\label{runTests:96}
+@*)
+  (*@\vdmnotcovered{source}@*).setCredits((*@\vdmnotcovered{source\_credits}@*));
+  dest.setCredits((*@\vdmnotcovered{dest\_credits}@*));)
+(*@
+\label{preTransfer:98}
+@*)
+  pre f <> t and amount (*@\vdmnotcovered{>=}@*) (*@\vdmnotcovered{0.0}@*)
+  post (*@\vdmnotcovered{customers}@*)(t).getCredits() >= (*@\vdmnotcovered{amount}@*);
+ 
+ public static runTests: () ==> ()
+ runTests() == new (*@\vdmnotcovered{TestRunner}@*)().run(); 
+ 
+end Network
+\end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[Network:20]{Network} & 20&0.0\% & 0 \\
+\hline
+\hyperref[addCustomer:35]{addCustomer} & 35&0.0\% & 0 \\
+\hline
+\hyperref[addMerchant:39]{addMerchant} & 39&0.0\% & 0 \\
+\hline
+\hyperref[getCustomer:51]{getCustomer} & 51&0.0\% & 0 \\
+\hline
+\hyperref[getCustomers:26]{getCustomers} & 26&0.0\% & 0 \\
+\hline
+\hyperref[getFee:29]{getFee} & 29&0.0\% & 0 \\
+\hline
+\hyperref[getMerchant:55]{getMerchant} & 55&0.0\% & 0 \\
+\hline
+\hyperref[getMerchants:23]{getMerchants} & 23&0.0\% & 0 \\
+\hline
+\hyperref[preTransfer:98]{preTransfer} & 98&0.0\% & 0 \\
+\hline
+\hyperref[purchaseProduct:59]{purchaseProduct} & 59&0.0\% & 0 \\
+\hline
+\hyperref[removeCustomer:43]{removeCustomer} & 43&0.0\% & 0 \\
+\hline
+\hyperref[removeMerchant:47]{removeMerchant} & 47&0.0\% & 0 \\
+\hline
+\hyperref[runTests:96]{runTests} & 96&0.0\% & 0 \\
+\hline
+\hyperref[setFee:32]{setFee} & 32&0.0\% & 0 \\
+\hline
+\hyperref[transferCredit:81]{transferCredit} & 81&0.0\% & 0 \\
+\hline
+\hline
+Network.vdmpp & & 0.0\% & 0 \\
+\hline
+\end{longtable}
+

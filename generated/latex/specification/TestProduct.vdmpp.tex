@@ -1,0 +1,38 @@
+\begin{vdmpp}[breaklines=true]
+class TestProduct is subclass of TestCase
+
+operations
+(*@
+\label{testProductMethods:4}
+@*)
+ public testProductMethods: () ==> ()
+ testProductMethods() == (*@\vdmnotcovered{(}@*)
+  dcl name: Product`ProductName := (*@\vdmnotcovered{"TestProduct"}@*);
+  dcl price: Product`ProductPrice := (*@\vdmnotcovered{15}@*);
+  dcl stock: Product`ProductStock := (*@\vdmnotcovered{100}@*);
+  dcl discount: Network`NetworkDiscount := (*@\vdmnotcovered{0.1}@*);
+  dcl product: Product := new Product(name,0,(*@\vdmnotcovered{0}@*),(*@\vdmnotcovered{0}@*));
+  assertTrue(name = (*@\vdmnotcovered{product}@*).(*@\vdmnotcovered{getName}@*)());
+  (*@\vdmnotcovered{product}@*).setPrice((*@\vdmnotcovered{price}@*));
+  (*@\vdmnotcovered{assertTrue}@*)(price = product.(*@\vdmnotcovered{getPrice}@*)());
+  (*@\vdmnotcovered{product}@*).setStock((*@\vdmnotcovered{stock}@*));
+  (*@\vdmnotcovered{assertTrue}@*)(stock (*@\vdmnotcovered{=}@*) (*@\vdmnotcovered{product}@*).(*@\vdmnotcovered{getStock}@*)());
+  (*@\vdmnotcovered{product}@*).setDiscount((*@\vdmnotcovered{discount}@*));
+  assertTrue(discount = product.(*@\vdmnotcovered{getDiscount}@*)());
+ );
+
+end TestProduct
+\end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[testProductMethods:4]{testProductMethods} & 4&0.0\% & 0 \\
+\hline
+\hline
+TestProduct.vdmpp & & 0.0\% & 0 \\
+\hline
+\end{longtable}
+

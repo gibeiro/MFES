@@ -1,0 +1,32 @@
+\begin{vdmpp}[breaklines=true]
+class TestCustomer is subclass of TestCase
+
+operations
+(*@
+\label{testCustomerMethods:4}
+@*)
+ public testCustomerMethods : () ==> ()
+ testCustomerMethods() == (*@\vdmnotcovered{(}@*)
+  dcl customer1: Customer := (*@\vdmnotcovered{new}@*) (*@\vdmnotcovered{Customer}@*)((*@\vdmnotcovered{"TestCustomer1"}@*),(*@\vdmnotcovered{1000.0}@*));
+  dcl customer2: Customer := new Customer((*@\vdmnotcovered{customer1}@*),(*@\vdmnotcovered{"TestCustomer2"}@*),(*@\vdmnotcovered{1000.0}@*));  
+  assertTrue((*@\vdmnotcovered{customer1}@*).(*@\vdmnotcovered{getCredits}@*)() = (*@\vdmnotcovered{0.0}@*));
+  customer1.setCredits((*@\vdmnotcovered{25.0}@*));
+  (*@\vdmnotcovered{assertTrue}@*)((*@\vdmnotcovered{customer1}@*).getCredits() (*@\vdmnotcovered{=}@*) (*@\vdmnotcovered{25.0}@*));
+  assertTrue(customer2.(*@\vdmnotcovered{getReferrer}@*)() = (*@\vdmnotcovered{customer1}@*));  
+ );
+
+end TestCustomer
+\end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[testCustomerMethods:4]{testCustomerMethods} & 4&0.0\% & 0 \\
+\hline
+\hline
+TestCustomer.vdmpp & & 0.0\% & 0 \\
+\hline
+\end{longtable}
+

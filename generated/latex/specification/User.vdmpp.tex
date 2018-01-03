@@ -1,0 +1,50 @@
+\begin{vdmpp}[breaklines=true]
+class User
+
+types
+ public UserBalance = real inv b == b (*@\vdmnotcovered{>=}@*) (*@\vdmnotcovered{0.0}@*);
+ public UserName = seq1 of char;
+ 
+instance variables
+ protected name: UserName := (*@\vdmnotcovered{"user"}@*);
+ protected balance: UserBalance := (*@\vdmnotcovered{0}@*);
+ 
+operations 
+(*@
+\label{getName:12}
+@*)
+ pure public getName: () ==> UserName
+ getName() == return (*@\vdmnotcovered{name}@*);
+ 
+(*@
+\label{getBalance:15}
+@*)
+ pure public getBalance: () ==> UserBalance
+ getBalance() == (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{balance}@*);
+ 
+(*@
+\label{setBalance:18}
+@*)
+ public setBalance: UserBalance ==> ()
+ setBalance(b) == balance := (*@\vdmnotcovered{b}@*)
+ pre b >= (*@\vdmnotcovered{0.0}@*);
+
+end User
+\end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[getBalance:15]{getBalance} & 15&0.0\% & 0 \\
+\hline
+\hyperref[getName:12]{getName} & 12&0.0\% & 0 \\
+\hline
+\hyperref[setBalance:18]{setBalance} & 18&0.0\% & 0 \\
+\hline
+\hline
+User.vdmpp & & 0.0\% & 0 \\
+\hline
+\end{longtable}
+

@@ -1,0 +1,95 @@
+\begin{vdmpp}[breaklines=true]
+class Product
+types
+ public ProductName = seq1 of char;
+ public ProductPrice = real inv p == p (*@\vdmnotcovered{>=}@*) (*@\vdmnotcovered{0.0}@*);
+ public ProductStock = nat inv s == s >= (*@\vdmnotcovered{0}@*);
+ public NetworkDiscount = Network`NetworkDiscount;
+
+instance variables
+ name: ProductName; 
+ price: ProductPrice := (*@\vdmnotcovered{0}@*);
+ stock: ProductStock := (*@\vdmnotcovered{0}@*);
+ discount: NetworkDiscount := (*@\vdmnotcovered{0.0}@*);
+ 
+operations 
+(*@
+\label{Product:15}
+@*)
+ public Product: ProductName * ProductPrice * ProductStock * NetworkDiscount ==> Product
+ Product(n,p,s,d) == (name := (*@\vdmnotcovered{n}@*); (*@\vdmnotcovered{setPrice}@*)(p); setStock(s); setDiscount(d); return (*@\vdmnotcovered{self}@*));
+ 
+ pure public getName: () ==> ProductName
+ getName() == return (*@\vdmnotcovered{name}@*);
+ 
+(*@
+\label{getName:21}
+@*)
+ pure public getPrice: () ==> ProductPrice
+ getPrice() == return (*@\vdmnotcovered{price}@*);
+ 
+(*@
+\label{getPrice:24}
+@*)
+ pure public getStock: () ==> ProductStock
+ getStock() == return (*@\vdmnotcovered{stock}@*);
+ 
+(*@
+\label{getStock:27}
+@*)
+ pure public getDiscount: () ==> NetworkDiscount
+ getDiscount() == (*@\vdmnotcovered{return}@*) (*@\vdmnotcovered{discount}@*);
+ 
+(*@
+\label{getDiscount:30}
+@*)
+ public setPrice: ProductPrice ==> ()
+ setPrice(p) == (*@\vdmnotcovered{price}@*) := (*@\vdmnotcovered{p}@*)
+ pre p (*@\vdmnotcovered{>=}@*) (*@\vdmnotcovered{0.0}@*);
+(*@
+\label{setPrice:33}
+@*)
+ 
+ public setStock: ProductStock ==> ()
+ setStock(s) == (*@\vdmnotcovered{stock}@*) := (*@\vdmnotcovered{s}@*)
+ pre s >= (*@\vdmnotcovered{0.0}@*);
+(*@
+\label{setStock:37}
+@*)
+ 
+ public setDiscount: NetworkDiscount ==> ()
+ setDiscount(d) == (*@\vdmnotcovered{discount}@*) := (*@\vdmnotcovered{d}@*)
+ pre d >= (*@\vdmnotcovered{0.0}@*) and (*@\vdmnotcovered{d}@*) (*@\vdmnotcovered{<=}@*) (*@\vdmnotcovered{1.0}@*);
+(*@
+\label{setDiscount:41}
+@*)
+
+end Product
+\end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[Product:15]{Product} & 15&0.0\% & 0 \\
+\hline
+\hyperref[getDiscount:30]{getDiscount} & 30&0.0\% & 0 \\
+\hline
+\hyperref[getName:21]{getName} & 21&0.0\% & 0 \\
+\hline
+\hyperref[getPrice:24]{getPrice} & 24&0.0\% & 0 \\
+\hline
+\hyperref[getStock:27]{getStock} & 27&0.0\% & 0 \\
+\hline
+\hyperref[setDiscount:41]{setDiscount} & 41&0.0\% & 0 \\
+\hline
+\hyperref[setPrice:33]{setPrice} & 33&0.0\% & 0 \\
+\hline
+\hyperref[setStock:37]{setStock} & 37&0.0\% & 0 \\
+\hline
+\hline
+Product.vdmpp & & 0.0\% & 0 \\
+\hline
+\end{longtable}
+

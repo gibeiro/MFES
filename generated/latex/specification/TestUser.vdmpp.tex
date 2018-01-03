@@ -1,0 +1,32 @@
+\begin{vdmpp}[breaklines=true]
+class TestUser is subclass of TestCase
+
+operations
+(*@
+\label{testUserMethods:4}
+@*)
+ public testUserMethods: () ==> ()
+ testUserMethods() == (*@\vdmnotcovered{(}@*)
+  dcl name: User`UserName := (*@\vdmnotcovered{"TestUser"}@*);
+  dcl balance: User`UserBalance := (*@\vdmnotcovered{100}@*); 
+  dcl user: User := new Customer(name,(*@\vdmnotcovered{0.0}@*));
+  (*@\vdmnotcovered{assertTrue}@*)(name = (*@\vdmnotcovered{user}@*).(*@\vdmnotcovered{getName}@*)()); 
+  (*@\vdmnotcovered{user}@*).setBalance((*@\vdmnotcovered{balance}@*));
+  (*@\vdmnotcovered{assertTrue}@*)((*@\vdmnotcovered{balance}@*) = (*@\vdmnotcovered{user}@*).(*@\vdmnotcovered{getBalance}@*)());
+ );
+
+end TestUser
+\end{vdmpp}
+\bigskip
+\begin{longtable}{|l|r|r|r|}
+\hline
+Function or operation & Line & Coverage & Calls \\
+\hline
+\hline
+\hyperref[testUserMethods:4]{testUserMethods} & 4&0.0\% & 0 \\
+\hline
+\hline
+TestUser.vdmpp & & 0.0\% & 0 \\
+\hline
+\end{longtable}
+

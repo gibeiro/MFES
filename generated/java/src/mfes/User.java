@@ -5,8 +5,8 @@ import org.overture.codegen.runtime.*;
 
 @SuppressWarnings("all")
 public class User {
-  protected String name;
-  protected Number balance;
+  protected String name = "user";
+  protected Number balance = 0L;
 
   public String getName() {
 
