@@ -19,6 +19,9 @@ operations
 	getProduct(n) == return products(n)
 	pre n in set dom products;
 	
+	public getProducts: () ==> set of Product
+	getProducts() == return rng products;
+	
 	public addProduct: Product ==> ()
 	addProduct(p) == products := products munion {p.getName() |-> p}
 	pre p not in set rng products;
